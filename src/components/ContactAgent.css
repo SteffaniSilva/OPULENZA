@@ -75,11 +75,18 @@
   flex: 1;
 }
 
-.map-image img {
+.map-image img, .map-image iframe {
   width: 100%;
-  height: auto;
+  height: 320px;
   border-radius: 12px;
+  border: 0;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .map-image img, .map-image iframe {
+    height: 220px;
+  }
 }
 
 
