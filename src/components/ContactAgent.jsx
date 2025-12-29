@@ -22,7 +22,8 @@ const ContactAgent = () => {
           
           <div className="agent-info">
               <p className="agent-contact">
-              <span>🏠 </span>Address | 123 Opulenza Ave, Colombo, Sri Lanka
+              <span>🏠 </span>
+              No: 123 Lotus Grove Lane, Colombo 07, Sri Lanka
             </p>
           </div>
 
@@ -33,12 +34,12 @@ const ContactAgent = () => {
 
 <div className="map-image map-embed">
       <iframe
-        title="Opulenza location"
-        src="https://www.google.com/maps?q=123+Opulenza+Ave,+Colombo,+Sri+Lanka&z=15&output=embed"
+        title="Opulenza location (Colombo 7)"
+        src="https://www.google.com/maps?q=Colombo+7,+Colombo,+Sri+Lanka&z=15&output=embed"
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
-      </div>
+      </div> 
       
 
       
