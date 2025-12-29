@@ -5,6 +5,7 @@ import SearchPage from './components/SearchPage.jsx';
 import PropertyDetails from "./components/PropertyDetails.jsx";
 import ContactAgent from "./components/ContactAgent.jsx";
 import ContactForm from './components/ContactForm.jsx';
+import About from './components/About.jsx';
 import Layout from './components/Layout.jsx';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="property/:id" element={<PropertyDetails />} />
         <Route path="contact" element={<ContactAgent />} />
         <Route path="contact-form" element={<ContactForm />} />
+        <Route path="about" element={<About />} />
       </Route>
     </Routes>
   );
