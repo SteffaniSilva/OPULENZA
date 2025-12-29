@@ -181,7 +181,7 @@ const SearchPage = () => {
           </Grid>
           <Grid item xs={12} md={4}>
             <TextField
-              label="Min Price in Millions (Rs.)"
+              label="Min Price (£)"
               name="minPrice"
               type="number"
               value={filters.minPrice}
@@ -191,7 +191,7 @@ const SearchPage = () => {
           </Grid>
           <Grid item xs={12} md={4}>
             <TextField
-              label="Max Price in Millions (Rs.)"
+              label="Max Price (£)"
               name="maxPrice"
               type="number"
               value={filters.maxPrice}
@@ -310,7 +310,7 @@ const SearchPage = () => {
                 />
                 <CardContent>
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                    Rs. {property.price.toLocaleString()} millions
+                    £{property.price.toLocaleString()}
                   </Typography>
                   <Typography>{property.short}</Typography>
                   <IconButton
@@ -331,62 +331,90 @@ const SearchPage = () => {
       <Typography variant="h5" gutterBottom sx={{ color: "#C9A227", fontWeight: "bold" }}>
         Search Results
       </Typography>
-      <Grid container spacing={2}>
-        {filteredProperties.map((property) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            key={property.id}
-            draggable
-            onDragStart={(e) => handleDragStart(e, property)}
+
+      {filteredProperties.length === 0 ? (
+        <Box sx={{ textAlign: "center", padding: "30px" }}>
+          <Typography variant="body1" sx={{ color: "#666" }}>
+            No properties match your search criteria.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ marginTop: "12px", backgroundColor: "#C9A227", '&:hover': { backgroundColor: '#D4AF37' } }}
+            onClick={() => {
+              setFilteredProperties(properties);
+              setFilters({
+                propertyType: "Any",
+                minPrice: "",
+                maxPrice: "",
+                minBedrooms: "",
+                maxBedrooms: "",
+                addedMonth: "",
+                addedYear: "",
+                postcode: "",
+              });
+            }}
           >
-            <Card className="property-card">
-              <CardMedia
-                component="img"
-                height="140"
-                image={property.picture}
-                alt="Property"
-              />
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Rs. {property.price.toLocaleString()} millions
-                </Typography>
-                <Typography>{property.short}</Typography>
-                <Box sx={{ display: "flex", alignItems: "center", marginTop: "1rem" }}>
-                  <IconButton
-                    onClick={() => addToFavourites(property)}
-                    sx={{
-                      color: favourites.some((fav) => fav.id === property.id)
-                        ? "#d32f2f"
-                        : "#aaa",
-                    }}
-                  >
-                    <Heart />
-                  </IconButton>
-                  <Button
-                    component={Link}
-                    to={`/property/${property.id}`}
-                    variant="outlined"
-                    sx={{ 
-                      marginLeft: 1,
-                      color: "#C9A227",
-                      borderColor: "#C9A227",
-                      '&:hover': {
-                        borderColor: "#D4AF37",
-                        backgroundColor: "rgba(201, 162, 39, 0.1)"
-                      }
-                    }}
-                  >
-                    View Details
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+            Show All Properties
+          </Button>
+        </Box>
+      ) : (
+        <Grid container spacing={2}>
+          {filteredProperties.map((property) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={property.id}
+              draggable
+              onDragStart={(e) => handleDragStart(e, property)}
+            >
+              <Card className="property-card">
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={property.picture}
+                  alt="Property"
+                />
+                <CardContent>
+                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                    £{property.price.toLocaleString()}
+                  </Typography>
+                  <Typography>{property.short}</Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", marginTop: "1rem" }}>
+                    <IconButton
+                      onClick={() => addToFavourites(property)}
+                      sx={{
+                        color: favourites.some((fav) => fav.id === property.id)
+                          ? "#d32f2f"
+                          : "#aaa",
+                      }}
+                    >
+                      <Heart />
+                    </IconButton>
+                    <Button
+                      component={Link}
+                      to={`/property/${property.id}`}
+                      variant="outlined"
+                      sx={{ 
+                        marginLeft: 1,
+                        color: "#C9A227",
+                        borderColor: "#C9A227",
+                        '&:hover': {
+                          borderColor: "#D4AF37",
+                          backgroundColor: "rgba(201, 162, 39, 0.1)"
+                        }
+                      }}
+                    >
+                      View Details
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 };
