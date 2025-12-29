@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import "./PropertyDetails.css";
 
 const PropertyDetails = () => {
@@ -7,6 +7,7 @@ const PropertyDetails = () => {
   const navigate = useNavigate();
   const [property, setProperty] = useState(null);
   const [activeTab, setActiveTab] = useState("description");
+  const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     fetch("/properties.json")
@@ -14,6 +15,7 @@ const PropertyDetails = () => {
       .then((data) => {
         const foundProperty = data.properties.find((prop) => prop.id === id);
         setProperty(foundProperty);
+        setActiveImage(0);
       })
       .catch((error) =>
         console.error("Error fetching property details:", error)
@@ -24,88 +26,130 @@ const PropertyDetails = () => {
     return <div className="loading">Loading property details...</div>;
   }
 
+  const images = [
+    property.img1,
+    property.img2,
+    property.img3,
+    property.img4,
+    property.img5,
+    property.img6,
+    property.img7,
+  ].filter(Boolean);
+
+  const openWhatsApp = () => {
+    const text = encodeURIComponent(`Hi, I'm interested in ${property.type} (${property.id}) at ${property.location}. Please contact me.`);
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+  };
+
   return (
     <div className="property-details-container">
-      <div className="property-details">
-        <button className="back-button" onClick={() => navigate("/search")}>
-          &larr; Back to Search
-        </button>
-
-        <h1>{property.type}</h1>
-
-        <div className="property-gallery">
-          <img src={property.img1} alt="Gallery 1" />
-          <img src={property.img2} alt="Gallery 2" />
-          <img src={property.img3} alt="Gallery 3" />
-          <img src={property.img4} alt="Gallery 4" />
-          <img src={property.img5} alt="Gallery 5" />
-          <img src={property.img6} alt="Gallery 6" />
-          <img src={property.img7} alt="Gallery 7" />
-        </div>
-
-        <div className="property-info">
-          <p>
-            Price: <span>Rs. {property.price.toLocaleString()} million</span>
-          </p>
-          <p>
-            Bedrooms: <span>{property.bedrooms}</span>
-          </p>
-          <p>
-            Bathrooms: <span>{property.bathrooms}</span>
-          </p>
-          <p>
-            Area: <span>{property.area} perches</span>
-          </p>
-          <p>
-            Location: <span>{property.location}</span>
-          </p>
-        </div>
-
-        <div className="tabs">
-          <button
-            className={activeTab === "description" ? "active" : ""}
-            onClick={() => setActiveTab("description")}
-          >
-            Description
+      <div className="property-details modern">
+        <div className="main-column">
+          <button className="back-button" onClick={() => navigate("/search")}>
+            &larr; Back to Search
           </button>
-          <button
-            className={activeTab === "floorPlan" ? "active" : ""}
-            onClick={() => setActiveTab("floorPlan")}
-          >
-            Floor Plan
-          </button>
-          <button
-            className={activeTab === "map" ? "active" : ""}
-            onClick={() => setActiveTab("map")}
-          >
-            Map
-          </button>
+
+          <div className="gallery">
+            <div className="main-image">
+              <img
+                src={images[activeImage] || property.picture}
+                alt={`Property image ${activeImage + 1}`}
+                onClick={() => window.open(images[activeImage] || property.picture, "_blank")}
+              />
+            </div>
+
+            <div className="thumbnails">
+              {images.map((src, idx) => (
+                <button
+                  key={idx}
+                  className={`thumb ${idx === activeImage ? "active" : ""}`}
+                  onClick={() => setActiveImage(idx)}
+                  aria-label={`Show image ${idx + 1}`}
+                >
+                  <img src={src} alt={`Thumb ${idx + 1}`} />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="tabs">
+            <button
+              className={activeTab === "description" ? "active" : ""}
+              onClick={() => setActiveTab("description")}
+            >
+              Description
+            </button>
+            <button
+              className={activeTab === "floorPlan" ? "active" : ""}
+              onClick={() => setActiveTab("floorPlan")}
+            >
+              Floor Plan
+            </button>
+            <button
+              className={activeTab === "map" ? "active" : ""}
+              onClick={() => setActiveTab("map")}
+            >
+              Map
+            </button>
+          </div>
+
+          <div className="tab-content">
+            {activeTab === "description" && (
+              <div className="description">
+                <p>{property.description}</p>
+              </div>
+            )}
+            {activeTab === "floorPlan" && (
+              <div className="floor-plan">
+                {property.floorMap ? (
+                  <img src={property.floorMap} alt="Floor Plan" />
+                ) : (
+                  <p>No floor plan available.</p>
+                )}
+              </div>
+            )}
+            {activeTab === "map" && (
+              <div className="map">
+                {property.map ? (
+                  <iframe
+                    src={property.map}
+                    width="100%"
+                    height="400"
+                    allowFullScreen
+                    loading="lazy"
+                    title="Property Map"
+                  ></iframe>
+                ) : (
+                  <p>Map is not available for this listing.</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="tab-content">
-          {activeTab === "description" && (
-            <div className="description">
-              <p>{property.description}</p>
+        <aside className="side-panel">
+          <h2 className="property-title">{property.type} · <span className="location-line">{property.location}</span></h2>
+
+          <div className="price-row">
+            <div className="price">£{Number(property.price).toLocaleString()}</div>
+            <div className="badges">
+              <span className="badge">🛏 {property.bedrooms}</span>
+              <span className="badge">🛁 {property.bathrooms}</span>
+              <span className="badge">📐 {property.area}p</span>
             </div>
-          )}
-          {activeTab === "floorPlan" && (
-            <div className="floor-plan">
-              <img src={property.floorMap} alt="Floor Plan" />
-            </div>
-          )}
-          {activeTab === "map" && (
-            <div className="map">
-              <iframe
-                src={property.map}
-                width="100%"
-                height="400"
-                allowFullScreen
-                loading="lazy"
-                title="Property Map"
-              ></iframe>
-            </div>
-          )}
-        </div>
+          </div>
+
+          <div className="actions">
+            <button className="primary" onClick={() => window.location.href = '/contact'}>Request Info</button>
+            <button className="secondary" onClick={openWhatsApp}>WhatsApp</button>
+          </div>
+
+          <div className="more-info">
+            <p><strong>Tenure:</strong> {property.tenure || 'N/A'}</p>
+            <p><strong>Added:</strong> {property.added?.month} {property.added?.day}, {property.added?.year}</p>
+          </div>
+
+        </aside>
       </div>
     </div>
   );
