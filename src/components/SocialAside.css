@@ -1,0 +1,60 @@
+.social-aside {
+  position: fixed;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+}
+
+.social-aside ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  /* increased vertical gap for better separation */
+  gap: 24px;
+}
+
+.social-aside a {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #C9A227;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transition: transform .15s ease, background .15s ease;
+  text-decoration: none;
+}
+
+/* normalize SVG rendering so icons align vertically */
+.social-aside svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.social-aside li {
+  display: block;
+}
+
+/* ensure hovering the list item also activates the anchor hover (fixes inconsistent hover on some icons) */
+.social-aside li:hover a,
+.social-aside a:hover,
+.social-aside a:focus {
+  transform: translateX(-6px);
+  background: #b89521;
+  outline: none;
+  will-change: transform;
+}
+
+/* hide on small screens to keep layout clean */
+@media (max-width: 768px) {
+  .social-aside {
+    display: none;
+  }
+}
