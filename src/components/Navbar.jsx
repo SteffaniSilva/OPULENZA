@@ -26,8 +26,8 @@ const Navbar = ({ favouritesCount = 0 }) => {
             <Search size={18} />
             <span>Browse</span>
           </Link>
-          <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
-            <span>About Us</span>
+          <Link to="/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
+            <span>About</span>
           </Link>
           <Link to="/contact" className="nav-link" onClick={() => setMobileMenuOpen(false)}>
             <span>Contact Us</span>
