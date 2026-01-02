@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import DemoWarning from './DemoWarning';
 import './Layout.css';
 
 const Layout = () => {
-  const [showWarning, setShowWarning] = useState(true);
-
   return (
     <div className="app-container">
-      {showWarning && <DemoWarning onClose={() => setShowWarning(false)} />}
       <Navbar />
       <main className="main-content">
         <Outlet />
@@ -17,7 +13,9 @@ const Layout = () => {
       <footer className="app-footer">
         <div className="footer-top">
           <div className="footer-left">
-            <p className="footer-desc">At Opulenza, we believe luxury is more than a home—it’s a lifestyle. From exclusive apartments in Colombo to wellness villas, premium residencies, and prime land plots, our developments combine elegance, comfort, and lasting value. As one of Sri Lanka’s trusted real estate brands, we craft spaces that enhance lives and secure your investment for the future.</p>
+            <p className="footer-desc">
+              At Opulenza, we believe luxury is more than a home—it’s a lifestyle. From exclusive apartments in Colombo to wellness villas, premium residencies, and prime land plots, our developments combine elegance, comfort, and lasting value. As one of Sri Lanka’s trusted real estate brands, we craft spaces that enhance lives and secure your investment for the future.
+            </p>
             <p className="footer-contact"><strong>Phone:</strong> +94 77 123 4567</p>
             <p className="footer-contact"><strong>Address:</strong> No:123 Lotus Grove Lane, Colombo 07, Sri Lanka</p>
           </div>
