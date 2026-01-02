@@ -1,155 +1,137 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import './ContactForm.css';
 
 const ContactForm = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const agentName = queryParams.get('agent') || 'our team';
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    message: '',
-    agent: agentName
+    message: ''
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+
+    if (name === 'phone') {
+      if (/^\d*$/.test(value)) {
+        setFormData((prev) => ({ ...prev, phone: value }));
+        setErrors((prev) => ({ ...prev, phone: '' })); 
+      } else {
+        setErrors((prev) => ({ ...prev, phone: 'Phone number can only contain digits' }));
+      }
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: '' })); 
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
+
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = 'Enter a valid email address';
     }
-    
+
+
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone is required';
-    } else if (!/^[0-9]{10}$/.test(formData.phone)) {
-      newErrors.phone = 'Phone must be 10 digits';
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\d+$/.test(formData.phone)) {
+      newErrors.phone = 'Phone number can only contain digits';
+    } else if (formData.phone.length !== 10) {
+      newErrors.phone = 'Phone number must be 10 digits';
     }
-    
+
+
     if (!formData.message.trim()) {
       newErrors.message = 'Message is required';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (validateForm()) {
-      setIsSubmitting(true);
-      
-      // Simulate form submission (replace with actual API call)
-      setTimeout(() => {
-        console.log('Form submitted:', formData);
-        setIsSubmitting(false);
-        setSubmitSuccess(true);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          message: '',
-          agent: agentName
-        });
-      }, 1500);
-    }
-  };
 
-  if (submitSuccess) {
-    return (
-      <div className="success-message">
-        <h2>Thank You!</h2>
-        <p>Your message to {agentName} has been sent successfully.</p>
-        <p>We'll get back to you within 24 hours.</p>
-      </div>
-    );
-  }
+    const isValid = validateForm();
+    if (!isValid) return;
+
+    setIsSubmitting(true);
+
+    setTimeout(() => {
+      console.log('Form submitted:', formData);
+
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+      setErrors({});
+      setIsSubmitting(false);
+    }, 1500);
+  };
 
   return (
     <div className="contact-form-container">
-      <h1>Contact {agentName}</h1>
-      <p className="form-subtitle">Fill out the form below and we'll get back to you shortly</p>
-      
-      <form onSubmit={handleSubmit} className="contact-form">
-        <div className="form-group">
-          <label htmlFor="name">Your Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className={errors.name ? 'error' : ''}
-          />
-          {errors.name && <span className="error-message">{errors.name}</span>}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="email">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={errors.email ? 'error' : ''}
-          />
-          {errors.email && <span className="error-message">{errors.email}</span>}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="phone">Phone Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className={errors.phone ? 'error' : ''}
-            placeholder="07X XXX XXXX"
-          />
-          {errors.phone && <span className="error-message">{errors.phone}</span>}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="message">Your Message</label>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            rows="5"
-            className={errors.message ? 'error' : ''}
-          ></textarea>
-          {errors.message && <span className="error-message">{errors.message}</span>}
-        </div>
-        
-        <input type="hidden" name="agent" value={formData.agent} />
-        
+      <h2 className="form-title">TALK TO US</h2>
+
+      <form onSubmit={handleSubmit} className="contact-form" noValidate>
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        {errors.name && <p className="error-message">{errors.name}</p>}
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        {errors.email && <p className="error-message">{errors.email}</p>}
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Enter your phone number"
+          value={formData.phone}
+          onChange={handleChange}
+          maxLength="10"
+          inputMode="numeric"
+        />
+        {errors.phone && <p className="error-message">{errors.phone}</p>}
+
+        <textarea
+          name="message"
+          placeholder="How can we help you?"
+          rows="5"
+          value={formData.message}
+          onChange={handleChange}
+        />
+        {errors.message && <p className="error-message">{errors.message}</p>}
+
         <button type="submit" className="submit-btn" disabled={isSubmitting}>
-          {isSubmitting ? 'Sending...' : 'Send Message'}
+          {isSubmitting ? 'Sending...' : 'Send Your Message'}
         </button>
+
       </form>
     </div>
   );

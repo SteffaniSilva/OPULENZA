@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './ContactAgent.css';
+import './ContactPage.css';
 
-const ContactAgent = () => {
+const ContactPage = () => {
   return (
     <div className="contact-container">
       <h1>Contact Us</h1>
@@ -85,4 +85,4 @@ const ContactAgent = () => {
   );
 };
 
-export default ContactAgent;
+export default ContactPage;

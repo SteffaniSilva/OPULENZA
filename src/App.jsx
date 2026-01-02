@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage.jsx';
 import SearchPage from './components/SearchPage.jsx';
 import PropertyDetails from "./components/PropertyDetails.jsx";
-import ContactAgent from "./components/ContactAgent.jsx";
+import ContactPage from "./components/ContactPage.jsx";
 import ContactForm from './components/ContactForm.jsx';
 import About from './components/About.jsx';
 import Layout from './components/Layout.jsx';
@@ -15,7 +15,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="property/:id" element={<PropertyDetails />} />
-        <Route path="contact" element={<ContactAgent />} />
+        <Route path="contact" element={<ContactPage />} />
         <Route path="contact-form" element={<ContactForm />} />
         <Route path="about" element={<About />} />
       </Route>
