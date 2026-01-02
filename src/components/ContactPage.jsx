@@ -6,7 +6,6 @@ const ContactPage = () => {
   return (
     <div className="contact-container">
       <h1>Contact Us</h1>
-      <p className="contact-subtitle">Get in touch with our professional real estate agents</p>
       
           <div className="agent-info">
               <p className="agent-contact">
