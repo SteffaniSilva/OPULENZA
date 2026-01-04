@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import About from '../About';
+import About from '../src/components/About';
 
 describe('About Component', () => {
   test('renders all headings', () => {
@@ -16,3 +16,4 @@ describe('About Component', () => {
     expect(screen.getByAltText(/Opulenza goal/i)).toBeInTheDocument();
   });
 });
+

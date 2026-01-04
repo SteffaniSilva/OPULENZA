@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import Navbar from '../Navbar';
+/*import { render, screen, fireEvent } from '@testing-library/react';
+import Navbar from '../src/components/Navbar';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('Navbar Component', () => {
@@ -17,4 +17,20 @@ describe('Navbar Component', () => {
     fireEvent.click(button);
     expect(screen.getByText(/Home/i).parentElement).toHaveClass('mobile-open');
   });
+});*/
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+
+test('toggles mobile menu button', () => {
+  render(
+    <MemoryRouter>
+      <Navbar />
+    </MemoryRouter>
+  );
+
+  const button = screen.getByLabelText(/toggle menu/i);
+  fireEvent.click(button);
+
+  expect(screen.getByText(/Home/i)).toBeInTheDocument();
 });

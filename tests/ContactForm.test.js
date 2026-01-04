@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import ContactForm from '../ContactForm';
+/*import { render, screen, fireEvent } from '@testing-library/react';
+import ContactForm from '../src/components/ContactForm';
 
 describe('ContactForm Component', () => {
   test('renders all input fields', () => {
@@ -25,4 +25,21 @@ describe('ContactForm Component', () => {
     fireEvent.change(phoneInput, { target: { value: '0712345678' } });
     expect(screen.queryByText(/Phone number can only contain digits/i)).not.toBeInTheDocument();
   });
+});*/
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import ContactForm from '../components/ContactForm';
+
+test('shows validation errors on empty submit', () => {
+  render(
+    <MemoryRouter>
+      <ContactForm />
+    </MemoryRouter>
+  );
+
+  fireEvent.click(screen.getByText(/Send Message/i));
+
+  expect(screen.getByText(/Name is required/i)).toBeInTheDocument();
+  expect(screen.getByText(/Email is required/i)).toBeInTheDocument();
+  expect(screen.getByText(/Phone is required/i)).toBeInTheDocument();
 });

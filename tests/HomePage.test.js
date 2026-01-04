@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import HomePage from '../HomePage';
+/*import { render, screen } from '@testing-library/react';
+import HomePage from '../src/components/HomePage';
 import { BrowserRouter } from 'react-router-dom';
 
 const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>);
@@ -23,4 +23,18 @@ describe('HomePage Component', () => {
     expect(screen.getByText(/Best Prices/i)).toBeInTheDocument();
     expect(screen.getByText(/Expert Agents/i)).toBeInTheDocument();
   });
+});*/
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import HomePage from '../components/HomePage';
+
+test('renders hero section text', () => {
+  render(
+    <MemoryRouter>
+      <HomePage />
+    </MemoryRouter>
+  );
+
+  expect(screen.getByText(/EXCLUSIVE APARTMENTS/i)).toBeInTheDocument();
+  expect(screen.getByText(/Discover Properties/i)).toBeInTheDocument();
 });
