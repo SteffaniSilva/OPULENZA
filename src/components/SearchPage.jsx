@@ -35,8 +35,6 @@ const SearchPage = () => {
     return savedFavourites ? JSON.parse(savedFavourites) : [];
   });
 
-  const [draggedFavourite, setDraggedFavourite] = useState(null);
-
   useEffect(() => {
     fetch("/properties.json")
       .then((response) => response.json())
@@ -149,24 +147,12 @@ const SearchPage = () => {
     e.preventDefault();
   };
 
-  const handleFavouriteDragStart = (e, property) => {
-    setDraggedFavourite(property);
-  };
-
-  const handleFavouriteDropOutside = () => {
-    if (draggedFavourite) {
-      removeFavourite(draggedFavourite.id);
-      setDraggedFavourite(null);
-    }
-  };
-
   return (
     <Box sx={{ padding: "20px", maxWidth: "1400px", margin: "0 auto" }}>
       <Typography variant="h4" align="center" gutterBottom sx={{ color: "#C9A227", fontWeight: "bold", marginBottom: "2rem" }}>
         Search Your Dream Home
       </Typography>
       
-      {/* Search Form */}
       <Box
         component="form"
         sx={{
@@ -179,7 +165,6 @@ const SearchPage = () => {
         onSubmit={handleSearch}
       >
         <Grid container spacing={2}>
-          {/* All filters here, unchanged */}
           <Grid item xs={12} md={4}>
             <TextField
               label="Property Type"
@@ -194,27 +179,73 @@ const SearchPage = () => {
               <MenuItem value="Flat">Flat</MenuItem>
             </TextField>
           </Grid>
-          {/* Price and bedrooms filters */}
           <Grid item xs={12} md={4}>
-            <TextField label="Min Price (£)" name="minPrice" type="number" value={filters.minPrice} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Min Price (£)"
+              name="minPrice"
+              type="number"
+              value={filters.minPrice}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TextField label="Max Price (£)" name="maxPrice" type="number" value={filters.maxPrice} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Max Price (£)"
+              name="maxPrice"
+              type="number"
+              value={filters.maxPrice}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TextField label="Min Bedrooms" name="minBedrooms" type="number" value={filters.minBedrooms} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Min Bedrooms"
+              name="minBedrooms"
+              type="number"
+              value={filters.minBedrooms}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TextField label="Max Bedrooms" name="maxBedrooms" type="number" value={filters.maxBedrooms} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Max Bedrooms"
+              name="maxBedrooms"
+              type="number"
+              value={filters.maxBedrooms}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TextField label="Added Month (Ex: February)" name="addedMonth" value={filters.addedMonth} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Added Month (Ex: February)"
+              name="addedMonth"
+              value={filters.addedMonth}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TextField label="Added Year (Ex: 2020)" name="addedYear" type="number" value={filters.addedYear} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Added Year (Ex: 2020)"
+              name="addedYear"
+              type="number"
+              value={filters.addedYear}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
-            <TextField label="Location" name="postcode" value={filters.postcode} onChange={handleInputChange} fullWidth />
+            <TextField
+              label="Location"
+              name="postcode"
+              value={filters.postcode}
+              onChange={handleInputChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={12} md={4}>
             <Button
@@ -224,7 +255,9 @@ const SearchPage = () => {
               sx={{ 
                 height: "56px",
                 backgroundColor: "#C9A227",
-                '&:hover': { backgroundColor: "#D4AF37" }
+                '&:hover': {
+                  backgroundColor: "#D4AF37",
+                }
               }}
             >
               Search
@@ -235,7 +268,6 @@ const SearchPage = () => {
 
       <Divider sx={{ marginY: "20px", borderColor: "#ddd" }} />
 
-      {/* Favourites */}
       <Box
         sx={{
           padding: "20px",
@@ -243,9 +275,8 @@ const SearchPage = () => {
           borderRadius: "10px",
           marginBottom: "30px",
         }}
-        onDrop={(e) => handleDrop(e)}
-        onDragOver={(e) => handleDragOver(e)}
-        onDragLeave={handleFavouriteDropOutside} // Remove dragged favourite when leaving container
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
       >
         <Typography variant="h5" gutterBottom sx={{ color: "#C9A227", fontWeight: "bold" }}>
           Favourites
@@ -257,23 +288,19 @@ const SearchPage = () => {
           sx={{ 
             marginBottom: "10px",
             backgroundColor: "#d32f2f",
-            '&:hover': { backgroundColor: "#b71c1c" },
-            '&:disabled': { backgroundColor: "#f5f5f5" }
+            '&:hover': {
+              backgroundColor: "#b71c1c",
+            },
+            '&:disabled': {
+              backgroundColor: "#f5f5f5",
+            }
           }}
         >
           Clear Favourites
         </Button>
         <Grid container spacing={2}>
           {favourites.map((property) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              key={property.id}
-              draggable
-              onDragStart={(e) => handleFavouriteDragStart(e, property)}
-            >
+            <Grid item xs={12} sm={6} md={4} key={property.id}>
               <Card className="property-card">
                 <CardMedia
                   component="img"
@@ -301,7 +328,6 @@ const SearchPage = () => {
 
       <Divider sx={{ marginY: "20px", borderColor: "#ddd" }} />
 
-      {/* Search Results */}
       <Typography variant="h5" gutterBottom sx={{ color: "#C9A227", fontWeight: "bold" }}>
         Search Results
       </Typography>
