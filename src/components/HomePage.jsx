@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, TrendingUp, Users } from 'lucide-react';
+import { Home, TrendingUp, Users } from "lucide-react";
 import './HomePage.css';
 import SocialAside from './SocialAside';
 
