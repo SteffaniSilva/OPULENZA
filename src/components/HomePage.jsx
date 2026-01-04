@@ -4,6 +4,7 @@ import { Home, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
 import SocialAside from './SocialAside';
 
+
 const HomePage = () => {
   return (
     <div className="home-container">
